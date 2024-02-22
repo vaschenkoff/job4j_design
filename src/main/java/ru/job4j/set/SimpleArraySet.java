@@ -2,7 +2,6 @@ package ru.job4j.set;
 
 import ru.job4j.collection.SimpleArrayList;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Objects;
 
@@ -12,11 +11,12 @@ public class SimpleArraySet<T> implements SimpleSet<T> {
 
     @Override
     public boolean add(T value) {
-        if (!contains(value)) {
-            set.add(value);
-            return true;
+        if (contains(value)) {
+            return false;
         }
-        return false;
+        set.add(value);
+        return true;
+
     }
 
     @Override
