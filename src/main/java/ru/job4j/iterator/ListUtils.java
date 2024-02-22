@@ -7,35 +7,10 @@ public class ListUtils {
 
     public static <T> void addBefore(List<T> list, int index, T value) {
         Objects.checkIndex(index, list.size());
-        ListIterator<T> iterator = list.listIterator();
-        while (iterator.hasNext()) {
-            if (iterator.nextIndex() == index) {
-                iterator.add(value);
-                break;
-            }
-            iterator.next();
-        }
-    }
-
-    public static <T> void addAfter(List<T> list, int index, T value) {
-        Objects.checkIndex(index, list.size());
-        ListIterator<T> iterator = list.listIterator();
-        while (iterator.hasNext()) {
-            if (iterator.nextIndex() == index) {
-                iterator.next();
-                iterator.add(value);
-                break;
-            }
-            iterator.next();
-        }
-    }
-
-    public static <T> void addBefore2(List<T> list, int index, T value) {
-        Objects.checkIndex(index, list.size());
         list.listIterator(index).add(value);
     }
 
-    public static <T> void addAfter2(List<T> list, int index, T value) {
+    public static <T> void addAfter(List<T> list, int index, T value) {
         Objects.checkIndex(index, list.size());
         list.listIterator(index + 1).add(value);
     }
@@ -60,7 +35,6 @@ public class ListUtils {
     }
 
     public static <T> void removeAll(List<T> list, List<T> elements) {
-        ListIterator<T> iterator = list.listIterator();
         removeIf(list, elements::contains);
     }
 }
