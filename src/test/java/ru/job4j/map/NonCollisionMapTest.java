@@ -122,7 +122,6 @@ class NonCollisionMapTest {
         assertThat(map).hasSize(4);
     }
 
-
     @Test
     void whenCheckPutZeroAndNull() {
         SimpleMap<Integer, String> map = new NonCollisionMap<>();
