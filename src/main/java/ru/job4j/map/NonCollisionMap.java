@@ -16,13 +16,12 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
 
     @Override
     public boolean put(K key, V value) {
-        if ((float) count / capacity >= LOAD_FACTOR) {
+        float res = (float) count / capacity;
+        if (res >= LOAD_FACTOR) {
             expand();
         }
         boolean result = false;
-        int hashCode = (key == null) ? 0 : Objects.hashCode(key);
-        int hash = hash(hashCode);
-        int index = indexFor(hash);
+        int index = indexByKey(key);
         if (table[index] == null) {
             table[index] = new MapEntry<>(key, value);
             result = true;
@@ -55,31 +54,38 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
 
     @Override
     public V get(K key) {
-        int hashCode = hash(Objects.hashCode(key));
-        int index = indexFor(hashCode);
-        if (table[index] != null) {
-            int hashCode2 = hash(Objects.hashCode(table[index].key));
-            if (hashCode == hashCode2 && Objects.equals(key, table[index].key)) {
-                return table[index].value;
-            }
+        if (keysIsEqual(key)) {
+            return table[indexByKey(key)].value;
         }
         return null;
     }
 
     @Override
     public boolean remove(K key) {
-        int hashCode = hash(Objects.hashCode(key));
-        int index = indexFor(hashCode);
-        if (table[index] != null) {
-            int hashCode2 = hash(Objects.hashCode(table[index].key));
-            if (hashCode == hashCode2 && Objects.equals(key, table[index].key)) {
+            if (keysIsEqual(key)) {
+                int index = indexByKey(key);
                 table[index] = null;
                 count--;
                 modCount++;
                 return true;
             }
-        }
         return false;
+    }
+
+    private int indexByKey(K key) {
+        int hashCode = hash(Objects.hashCode(key));
+        return indexFor(hashCode);
+    }
+
+    private boolean keysIsEqual(K key) {
+        boolean result = false;
+        int index = indexByKey(key);
+        if (table[index] != null) {
+            if (hash(Objects.hashCode(key)) == hash(Objects.hashCode(table[index].key)) && Objects.equals(key, table[index].key)) {
+                result = true;
+            }
+        }
+        return result;
     }
 
     @Override
