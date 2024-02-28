@@ -60,13 +60,13 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
     @Override
     public boolean remove(K key) {
         boolean result = false;
-            if (keysIsEqual(key)) {
-                int index = indexByKey(key);
-                table[index] = null;
-                count--;
-                modCount++;
-                result = true;
-            }
+        if (keysIsEqual(key)) {
+            int index = indexByKey(key);
+            table[index] = null;
+            count--;
+            modCount++;
+            result = true;
+        }
         return result;
     }
 
@@ -78,10 +78,8 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
     private boolean keysIsEqual(K key) {
         boolean result = false;
         int index = indexByKey(key);
-        if (table[index] != null) {
-            if (hash(Objects.hashCode(key)) == hash(Objects.hashCode(table[index].key)) && Objects.equals(key, table[index].key)) {
-                result = true;
-            }
+        if (table[index] != null && Objects.hashCode(key) == Objects.hashCode(table[index].key) && Objects.equals(key, table[index].key)) {
+            result = true;
         }
         return result;
     }
